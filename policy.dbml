@@ -1,0 +1,84 @@
+Project 청년정책 {
+  database_type: "PostgreSQL"
+}
+
+Table policy {
+  policy_id             varchar [pk, note: 'plcyNo - 정책번호']
+  name                  varchar [note: 'plcyNm - 정책명']
+  description           text    [note: 'plcyExplnCn - 정책설명내용']
+  support_content       text    [note: 'plcySprtCn - 정책지원내용']
+  application_method    text    [note: 'plcyAplyMthdCn - 신청방법']
+  review_method         text    [note: 'srngMthdCn - 심사방법']
+  submission_docs       text    [note: 'sbmsnDcmntCn - 제출서류내용']
+  extra_info            text    [note: 'etcMttrCn - 기타사항내용']
+  reference_url1        varchar [note: 'refUrlAddr1 - 참고URL1']
+  reference_url2        varchar [note: 'refUrlAddr2 - 참고URL2']
+  application_url       varchar [note: 'aplyUrlAddr - 신청URL']
+  support_scale         int     [note: 'sprtSclCnt - 지원규모수']
+  support_scale_limited boolean [note: 'sprtSclLmtYn - 지원규모제한여부']
+  support_fcfs          boolean [note: 'sprtArvlSeqYn - 선착순지원여부']
+  application_period    varchar [note: 'aplyYmd - 신청기간']
+  business_start_date   date    [note: 'bizPrdBgngYmd - 사업시작일']
+  business_end_date     date    [note: 'bizPrdEndYmd - 사업종료일']
+  business_period_note  text    [note: 'bizPrdEtcCn - 사업기간기타내용']
+  inquiry_count         int     [note: 'inqCnt - 조회수']
+  first_registered_at   timestamp [note: 'frstRegDt - 최초등록일시']
+  last_modified_at      timestamp [note: 'lastMdfcnDt - 최종수정일시']
+}
+
+Table policy_category {
+  policy_id       varchar [ref: > policy.policy_id]
+  main_category   varchar [note: 'lclsfNm - 정책대분류']
+  sub_category    varchar [note: 'mclsfNm - 정책중분류']
+}
+
+Table policy_condition {
+  policy_id             varchar [ref: > policy.policy_id]
+  min_age               int     [note: 'sprtTrgtMinAge - 최소연령']
+  max_age               int     [note: 'sprtTrgtMaxAge - 최대연령']
+  age_limited           boolean [note: 'sprtTrgtAgeLmtYn - 연령제한여부']
+  marriage_status_cd    varchar [note: 'mrgSttsCd - 결혼상태코드']
+  income_condition_cd   varchar [note: 'earnCndSeCd - 소득조건코드']
+  income_min            int     [note: 'earnMinAmt - 소득최소금액']
+  income_max            int     [note: 'earnMaxAmt - 소득최대금액']
+  income_note           text    [note: 'earnEtcCn - 소득기타내용']
+  school_cd             varchar [note: 'schoolCd - 학력요건']
+  job_cd                varchar [note: 'jobCd - 직업요건']
+  major_cd              varchar [note: 'plcyMajorCd - 전공요건']
+  special_condition_cd  varchar [note: 'sbizCd - 특화요건코드']
+  additional_condition  text    [note: 'addAplyQlfcCndCn - 추가신청조건']
+  participant_target    text    [note: 'ptcpPrpTrgtCn - 참여제안대상']
+}
+
+Table policy_meta {
+  policy_id            varchar [ref: > policy.policy_id]
+  plan_cycle           varchar [note: 'bscPlanCycl - 기본계획차수']
+  plan_way_no          varchar [note: 'bscPlanPlcyWayNo - 정책방향번호']
+  focus_task_no        varchar [note: 'bscPlanFcsAsmtNo - 중점과제번호']
+  task_no              varchar [note: 'bscPlanAsmtNo - 과제번호']
+  approval_status_cd   varchar [note: 'plcyAprvSttsCd - 승인상태코드']
+  policy_method_cd     varchar [note: 'plcyPvsnMthdCd - 제공방법코드']
+  provider_group_cd    varchar [note: 'pvsnInstGroupCd - 제공기관그룹코드']
+}
+
+Table organization {
+  organization_id varchar [pk, note: '기관코드: sprvsnInstCd, operInstCd, rgtrInstCd 등']
+  name            varchar [note: '기관명: sprvsnInstCdNm 등']
+  contact_name    varchar [note: '기관담당자명: sprvsnInstPicNm 등']
+}
+
+Table policy_organization {
+  policy_id       varchar [ref: > policy.policy_id]
+  organization_id varchar [ref: > organization.organization_id]
+  role            varchar [note: '기관 역할 (supervising, operating, registering 등)']
+}
+
+Table policy_zipcode {
+  policy_id varchar [ref: > policy.policy_id]
+  zipcode   varchar [note: 'zipCd - 정책 지원 지역']
+}
+
+Table policy_keyword {
+  policy_id varchar [ref: > policy.policy_id]
+  keyword   varchar [note: 'plcyKywdNm - 정책 키워드 (쉼표 분리)']
+}
