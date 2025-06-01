@@ -32,20 +32,31 @@ Table policy_category {
   sub_category    varchar [note: 'mclsfNm - 정책중분류']
 }
 
+Table code_group {
+  id    varchar [pk, note: '코드그룹명 (예: plcyAprvSttsCd)']
+  name  varchar [note: '코드그룹설명']
+}
+
+Table code {
+  id        varchar [pk, note: '코드값']
+  name      varchar [note: '코드설명']
+  group_id  varchar [ref: > code_group.id, note: '코드그룹참조']
+}
+
 Table policy_condition {
   policy_id             varchar [ref: > policy.policy_id]
   min_age               int     [note: 'sprtTrgtMinAge - 최소연령']
   max_age               int     [note: 'sprtTrgtMaxAge - 최대연령']
   age_limited           boolean [note: 'sprtTrgtAgeLmtYn - 연령제한여부']
-  marriage_status_cd    varchar [note: 'mrgSttsCd - 결혼상태코드']
-  income_condition_cd   varchar [note: 'earnCndSeCd - 소득조건코드']
+  marriage_status_cd    varchar [ref: > code.id, note: 'mrgSttsCd - 결혼상태코드']
+  income_condition_cd   varchar [ref: > code.id, note: 'earnCndSeCd - 소득조건코드']
   income_min            int     [note: 'earnMinAmt - 소득최소금액']
   income_max            int     [note: 'earnMaxAmt - 소득최대금액']
   income_note           text    [note: 'earnEtcCn - 소득기타내용']
-  school_cd             varchar [note: 'schoolCd - 학력요건']
-  job_cd                varchar [note: 'jobCd - 직업요건']
-  major_cd              varchar [note: 'plcyMajorCd - 전공요건']
-  special_condition_cd  varchar [note: 'sbizCd - 특화요건코드']
+  school_cd             varchar [ref: > code.id, note: 'schoolCd - 학력요건']
+  job_cd                varchar [ref: > code.id, note: 'jobCd - 직업요건']
+  major_cd              varchar [ref: > code.id, note: 'plcyMajorCd - 전공요건']
+  special_condition_cd  varchar [ref: > code.id, note: 'sbizCd - 특화요건코드']
   additional_condition  text    [note: 'addAplyQlfcCndCn - 추가신청조건']
   participant_target    text    [note: 'ptcpPrpTrgtCn - 참여제안대상']
 }
@@ -56,9 +67,9 @@ Table policy_meta {
   plan_way_no          varchar [note: 'bscPlanPlcyWayNo - 정책방향번호']
   focus_task_no        varchar [note: 'bscPlanFcsAsmtNo - 중점과제번호']
   task_no              varchar [note: 'bscPlanAsmtNo - 과제번호']
-  approval_status_cd   varchar [note: 'plcyAprvSttsCd - 승인상태코드']
-  policy_method_cd     varchar [note: 'plcyPvsnMthdCd - 제공방법코드']
-  provider_group_cd    varchar [note: 'pvsnInstGroupCd - 제공기관그룹코드']
+  approval_status_cd   varchar [ref: > code.id, note: 'plcyAprvSttsCd - 승인상태코드']
+  policy_method_cd     varchar [ref: > code.id, note: 'plcyPvsnMthdCd - 제공방법코드']
+  provider_group_cd    varchar [ref: > code.id, note: 'pvsnInstGroupCd - 제공기관그룹코드']
 }
 
 Table organization {
