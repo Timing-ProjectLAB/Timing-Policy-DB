@@ -26,10 +26,20 @@ Table policy {
   last_modified_at      timestamp [note: 'lastMdfcnDt - 최종수정일시']
 }
 
+Table category_group {
+  id    int [pk, increment]
+  name  varchar [note: 'lclsfNm - 정책대분류']
+}
+
+Table category {
+  id       int [pk, increment]
+  group_id int [ref: > category_group.id]
+  name     varchar [note: 'mclsfNm - 정책중분류']
+}
+
 Table policy_category {
-  policy_id       varchar [ref: > policy.policy_id]
-  main_category   varchar [note: 'lclsfNm - 정책대분류']
-  sub_category    varchar [note: 'mclsfNm - 정책중분류']
+  policy_id   varchar [ref: > policy.policy_id]
+  category_id int     [ref: > category.id]
 }
 
 Table policy_condition {
