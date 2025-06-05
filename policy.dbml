@@ -80,6 +80,8 @@ Table policy_meta {
   approval_status_cd   varchar [ref: > code.id, note: 'plcyAprvSttsCd - 승인상태코드']
   policy_method_cd     varchar [ref: > code.id, note: 'plcyPvsnMthdCd - 제공방법코드']
   provider_group_cd    varchar [ref: > code.id, note: 'pvsnInstGroupCd - 제공기관그룹코드']
+  application_period_cd varchar [ref: > code.id, note: 'aplyPrdSeCd - 신청기간구분코드']
+  business_period_cd    varchar [ref: > code.id, note: 'bizPrdSeCd - 사업기간구분코드']
 }
 
 Table organization {
